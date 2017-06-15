@@ -2,17 +2,15 @@
 
 {% block content %}
     <div id="wrapper">
-        <div id="container">
-            {% if idNotFound is defined %}
-                <div class="error">Erreur: l'id {{ id }} n'existe pas!</div>
-            {% else %}
-                <img src="{{asset(elem.image)}}" alt="" />
-                <p>{{ d.description }}</p>
-                <h2>{{ titre }} - id: {{ id }}</h2>
-                <img src="{{asset(image)}}" alt="" />
-                <p>{{ texte }}</p>
-            {% endif %}
-        </div>
+        {% if event is empty %}
+            <div class="error">Erreur: l'évènements d'id {{ id }} n'existe pas!</div>
+        {% else %}
+            <div id="container">
+                <h2>{{ event.nom }} - du {{ event.debut|date('Y m d H\\hi') }} à {{ event.fin|date('H\\hi') }}</h2>
+{#                <p>Catégorie: {{ categorie.nom }}</p>#}
+{#                <p><img src="{{asset(image.url)}}" alt="image.alt" />#}
+                {{ event.description }}</p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
-

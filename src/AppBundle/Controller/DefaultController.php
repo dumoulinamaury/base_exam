@@ -13,7 +13,7 @@ class DefaultController extends Controller {
     /**
      * @Route("/", name="homepage")
      */
-     function indexAction() {
+    function indexAction() {
         $om = $this->getDoctrine()->getManager();
         // rechercher tous les évènements
         $repo = $om->getRepository('AppBundle:Events');
@@ -36,15 +36,32 @@ class DefaultController extends Controller {
                     'events' => $events
         ]);
     }
-    
+
     /**
-     * @Route("/request/", name="request")
+     * @Route("/event/{id}" ,name="event", requirements={"id": "\d+"})
      */
-    public function request(Request $request) {
-        dump($request);
-        echo $request->query->get('key');
-        return $this->render('admin/debug.html.twig', [
-                    'request' => $request
+    public function eventDetail($id) {
+        $om = $this->getDoctrine()->getManager();
+        // rechercher tous les évènements
+        $repo = $om->getRepository('AppBundle:Events');
+
+        $answer = $repo->findById($id);
+        $event = [];
+        if ($answer != null) {
+            $event = array(
+                'id' => $answer[0]->getId(),
+                'nom' => $answer[0]->getNom(),
+                'description' => $answer[0]->getDescription(),
+                'debut' => $answer[0]->getDebut(),
+                'fin' => $answer[0]->getFin(),
+                'category_id' => $answer[0]->getCategoryId(),
+                'image_id' => $answer[0]->getImageId()
+            );
+        }
+
+        return $this->render("pages/event.html.twig", [
+                    'id' => $id,
+                    'event' => $event
         ]);
     }
 
@@ -64,40 +81,24 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/news/{id}" ,name="news_list", requirements={"id": "\d+"})
-     */
-    public function newsDetail($id) {
-        $om = $this->getDoctrine()->getManager();
-        // rechercher objet News avec Id $id
-        $repo = $om->getRepository('AppBundle:News');
-
-        $news = $repo->find($id);
-
-        if (empty($news)) {
-            return $this->render("pages/news.html.twig", [
-            "id" => $id,
-            "idNotFound" => true
-            ]);
-        }
-
-        return $this->render("pages/news.html.twig", [
-                    'id' => $id,
-                    'titre' => $news->getTitre(),
-                    'texte' => $news->getTexte(),
-                    'image' => $news->getImage()
-        ]);
-    }
-
-    /**
-     * @Route("/test/{param}", defaults={"param"= "Jema"}, name="test")
-     * this match http://127.0.0.1:8000/test but not http://127.0.0.1:8000/test/ ???
-     * @Route("/test{param}", defaults={"param"= "Jema"}, name="test")
-     * marche pas!!!
+     * @Route("/test/{param}", name="test")
      */
     public function test(Request $request, $param) {
         var_dump($param);
         echo "\n\r\n\r<br /><br />";
         var_dump($request);
         return new \Symfony\Component\HttpFoundation\Response("test réussi!");
+    }
 
-}}
+    /**
+     * @Route("/request/", name="request")
+     */
+    public function request(Request $request) {
+        dump($request);
+        echo $request->query->get('key');
+        return $this->render('admin/debug.html.twig', [
+                    'request' => $request
+        ]);
+    }
+
+}
