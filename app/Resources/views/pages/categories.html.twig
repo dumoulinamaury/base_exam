@@ -2,15 +2,27 @@
 
 {% block content %}
     <div id="wrapper">
-        <div id="container">
-            {% if idNotFound is defined %}
-                <div class="error">Erreur: l'id {{ id }} n'existe pas!</div>
-            {% else %}
-                <h2>{{ titre }} - id: {{ id }}</h2>
-                <img src="{{asset(image)}}" alt="" />
-                <p>{{ texte }}</p>
-            {% endif %}
-        </div>
+        {% for d in categories%}
+            <div id="container">
+                <h2>{{ d.nom }}</h2>
+                <p>
+                    {% if d.description is not empty %}
+                        {{ d.description }}
+                    {% else %}
+                        Pas de description, c'est que le nom est très clair. :-)
+                    {% endif %}
+                <ul>
+                    {% for d2 in d["events"] %}
+                        <li>{{ d2.nom }} - du {{ d2.debut|date('Y m d H\\hi') }} à {{ d2.fin|date('H\\hi') }} - <a href="/event/{{ d2.id }}" title="Détail de l'évènement {{ d2.id }}">(Plus d'informations...)</a></li>
+                        {% else %}
+                        <li>Aucun évènement n'est lié à cette catégorie.</li>
+                        {% endfor %}
+                </ul>
+                </p>
+            </div>
+        {% else %}
+            <div class="error"><strong>Désolé :-(</strong> il n'y a pas de catégorie pour le moment.</div>
+        {% endfor %}
     </div>
 {% endblock %}
 

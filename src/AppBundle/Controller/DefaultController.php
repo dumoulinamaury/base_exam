@@ -42,7 +42,6 @@ class DefaultController extends Controller {
      */
     public function eventDetail($id) {
         $om = $this->getDoctrine()->getManager();
-        // rechercher tous les évènements
         $repo = $om->getRepository('AppBundle:Events');
 
         $answer = $repo->findById($id);
@@ -67,7 +66,7 @@ class DefaultController extends Controller {
                     "url" => $answer[0]->getUrl()
                 );
             }
-            
+
             $repo = $om->getRepository('AppBundle:Categories');
             $answer = $repo->findById($event["category_id"]);
             $categorie = [];
@@ -83,6 +82,49 @@ class DefaultController extends Controller {
                     'event' => $event,
                     'image' => $image,
                     'categorie' => $categorie
+        ]);
+    }
+
+    /**
+     * @Route("/categories/", name="categories")
+     */
+    public function categories() {
+        $om = $this->getDoctrine()->getManager();
+        $repo = $om->getRepository('AppBundle:Categories');
+        $answer = $repo->findAll();
+        $categories = [];
+        foreach ($answer as $key => $val) {
+            $categories[$key] = array(
+                "id" => $val->getId(),
+                "nom" => $val->getNom(),
+                "description" => $val->getDescription()
+            );
+            $repo = $om->getRepository('AppBundle:Events');
+            $answer = $repo->findByCategory_id($categories[$key]["id"]);
+            $categories[$key]['events'] = [];
+            foreach ($answer as $key2 => $val2) {
+                $categories[$key]['events'][$key2] = array(
+                    "nom" => $val2->getNom(),
+                    "debut" => $val2->getDebut(),
+                    "fin" => $val2->getFin(),
+                    "id" => $val2->getId()
+                );
+            }
+
+//            $query = $repository->createQueryBuilder('p')
+//    ->where('p.price > :price')
+//    ->setParameter('price', '19.99')
+//    ->orderBy('p.price', 'ASC')
+//    ->getQuery();
+//
+//            $q = Doctrine_Query::create()
+//            ->from('Events e')
+//            ->leftJoin('e.Categories c')
+//            ->where('e.category_id = ?', 1);
+//          $article = $q->fetchOne();
+        }
+        return $this->render("pages/categories.html.twig", [
+                    'categories' => $categories
         ]);
     }
 
