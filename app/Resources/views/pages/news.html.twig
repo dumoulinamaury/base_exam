@@ -1,0 +1,16 @@
+{% extends 'section/index/index.html.twig' %}
+
+{% block content %}
+    <div id="wrapper">
+        <div id="container">
+            {% if idNotFound is defined %}
+                <div class="error">Erreur: l'id {{ id }} n'existe pas!</div>
+            {% else %}
+                <h2>{{ titre }} - id: {{ id }}</h2>
+                <img src="{{asset(image)}}" alt="" />
+                <p>{{ texte }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{include('section/index/header.html.twig') }}
+
+    {% block content %}
+        {{ dump(news) }}
+        <div id="wrapper">
+            {% for elem in news %}
+                <div id="container">
+                    <h2>{{ elem.titre }} - id: {{ elem.id }}</h2>
+                    <img src="{{asset(elem.image)}}" alt="" />
+                    <p>{{ elem.texte }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% endblock %}
+
+    {{include('section/index/footer.html.twig') }}
+{% endblock %}
