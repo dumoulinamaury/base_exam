@@ -13,26 +13,30 @@ class DefaultController extends Controller {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction() {
+     function indexAction() {
         $om = $this->getDoctrine()->getManager();
-        // rechercher toutes les news
-        $repo = $om->getRepository('AppBundle:News');
+        // rechercher tous les évènements
+        $repo = $om->getRepository('AppBundle:Events');
 
-        $news = $repo->findAll();
-        foreach ($news as $key => $value) {
-            $d->news[$key] = array(
-                'id' => $value->getId(),
-                'titre' => $value->getTitre(),
-                'texte' => $value->getTexte(),
-                'image' => $value->getImage()
+        $answer = $repo->findAll();
+        $events = [];
+        foreach ($answer as $key => $val) {
+            $events[$key] = array(
+                'id' => $val->getId(),
+                'nom' => $val->getNom(),
+                'description' => $val->getDescription(),
+                'debut' => $val->getDebut(),
+                'fin' => $val->getFin(),
+                'category_id' => $val->getCategoryId(),
+                'image_id' => $val->getImageId()
             );
         }
 
         return $this->render("section/index/index.html.twig", [
-                    'news' => $d->news
+                    'events' => $events
         ]);
     }
-
+    
     /**
      * @Route("/request/", name="request")
      */

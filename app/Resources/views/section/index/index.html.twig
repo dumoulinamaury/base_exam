@@ -4,14 +4,14 @@
     {{include('section/index/header.html.twig') }}
 
     {% block content %}
-        {{ dump(news) }}
         <div id="wrapper">
-            {% for elem in news %}
+            {% for d in events%}
                 <div id="container">
-                    <h2>{{ elem.titre }} - id: {{ elem.id }}</h2>
-                    <img src="{{asset(elem.image)}}" alt="" />
-                    <p>{{ elem.texte }}</p>
+                    <h2>{{ d.nom }} - du {{ d.debut|date('Y m d H\\hi') }} à {{ d.fin|date('H\\hi') }}</h2>
+                    <p><a href="/event/{{ d.id }}" title="Détail de l'évènement {{ d.id }}">Plus d'informations...</a></p>
                 </div>
+            {% else %}
+                <div class="error"><strong>Désolé :-(</strong> il n'y a pas d'évènements pour le moment.</div>
             {% endfor %}
         </div>
 

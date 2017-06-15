@@ -189,7 +189,7 @@ class Events
      *
      * @return int
      */
-    public function getCetegoryId()
+    public function getCategoryId()
     {
         return $this->categoryId;
     }
@@ -217,5 +217,18 @@ class Events
     {
         return $this->imageId;
     }
-}
 
+    /**
+     * Set categoryId
+     *
+     * @param integer $categoryId
+     *
+     * @return Events
+     */
+    public function setCategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
+
+        return $this;
+    }
+}

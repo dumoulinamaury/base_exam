@@ -94,4 +94,3 @@ class User
         return $this->profilePicture;
     }
 }
-

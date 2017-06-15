@@ -94,4 +94,3 @@ class Event_has_user
         return $this->eventId;
     }
 }
-
