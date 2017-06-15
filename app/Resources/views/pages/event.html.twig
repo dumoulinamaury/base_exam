@@ -7,9 +7,21 @@
         {% else %}
             <div id="container">
                 <h2>{{ event.nom }} - du {{ event.debut|date('Y m d H\\hi') }} à {{ event.fin|date('H\\hi') }}</h2>
-{#                <p>Catégorie: {{ categorie.nom }}</p>#}
-{#                <p><img src="{{asset(image.url)}}" alt="image.alt" />#}
-                {{ event.description }}</p>
+                <p>Catégorie: 
+                    {% if categorie is not empty %}
+                        {{ categorie.nom }}
+                    {% else %}
+                        aucune
+                    {% endif %}
+                </p>
+                <p>
+                    {% if image is not empty %}<img src="{{absolute_url(asset(image.url))}}" alt="image.alt" style='max-width: 400px; max-height: 400px;'/>{%endif%}
+                    {% if event.description is not empty %}
+                        {{ event.description }}
+                    {% else %}
+                        There is no description yet.
+                    {% endif %}
+                </p>
             </div>
         {% endif %}
     </div>

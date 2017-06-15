@@ -57,11 +57,32 @@ class DefaultController extends Controller {
                 'category_id' => $answer[0]->getCategoryId(),
                 'image_id' => $answer[0]->getImageId()
             );
+
+            $repo = $om->getRepository('AppBundle:Image');
+            $answer = $repo->findById($event["image_id"]);
+            $image = [];
+            if ($answer != null) {
+                $image = array(
+                    "alt" => $answer[0]->getAlt(),
+                    "url" => $answer[0]->getUrl()
+                );
+            }
+            
+            $repo = $om->getRepository('AppBundle:Categories');
+            $answer = $repo->findById($event["category_id"]);
+            $categorie = [];
+            if ($answer != null) {
+                $categorie = array(
+                    "nom" => $answer[0]->getNom()
+                );
+            }
         }
 
         return $this->render("pages/event.html.twig", [
                     'id' => $id,
-                    'event' => $event
+                    'event' => $event,
+                    'image' => $image,
+                    'categorie' => $categorie
         ]);
     }
 
